@@ -1,1 +1,1 @@
-echo $(python ~/scripts/new_times.py "$(cat /var/www/arduino/lastopen.json)") | jq '.[-3:10].[] | "at \(.time) (\(.since) ago), was closed for \(.difference) seconds"'
+echo $(python ~/scripts/new_times.py "$(cat /var/www/arduino/lastopen.json)") | jq '.[-10:].[] | "at \(.time) (\(.since) ago), was closed for \(.difference) seconds"'
