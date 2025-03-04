@@ -33,10 +33,10 @@ if ($distance > 70) {
             "difference" => stohms($time), 
             "difference_seconds" => $time, "unix" => time()
         ];
-        if (count($data) < 10) {
+        if (count($data) < 100) {
             $last = $data;
         } else {
-            $last = array_slice($data, -10);
+            $last = array_slice($data, -100);
         }
         $file = fopen("lastopen.json", "w");
         fwrite($file, json_encode($last));
