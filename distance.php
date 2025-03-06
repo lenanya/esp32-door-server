@@ -25,6 +25,17 @@ $data = json_decode(file_get_contents("lastopen.json"));
 $time = time() - end($data)->unix;
 fwrite(fopen("time", "w"), $time);
 
+if (!$distance) {
+    echo "AUGH";
+    die(1);
+}
+
+$hour = 3600;
+
+$logamount = 24;
+
+$logmaxtime = $hour * $logamount;
+
 if ($distance > 70) {
     $open = file_get_contents("open");
     if ($open == "closed" && $time > 10) {
@@ -33,10 +44,10 @@ if ($distance > 70) {
             "difference" => stohms($time), 
             "difference_seconds" => $time, "unix" => time()
         ];
-        if (count($data) < 100) {
+        if (count($data) < $logmaxtime) {
             $last = $data;
         } else {
-            $last = array_slice($data, -100);
+            $last = array_slice($data, -$logmaxtime);
         }
         $file = fopen("lastopen.json", "w");
         fwrite($file, json_encode($last));
@@ -48,23 +59,12 @@ if ($distance > 70) {
     fwrite(fopen("open", "w"), "closed");
 }
 
-if (!$distance) {
-    echo "AUGH";
-    die(1);
-}
-
 $data = json_decode(file_get_contents("distances.json"));
 $data[] = ["distance" => intval($distance), "time" => "".date("d.m - H:i:s")];
 
 $file = fopen("distances.json", "w");
 
 $last = [];
-
-$hour = 3600;
-
-$logamount = 24;
-
-$logmaxtime = $hour * $logamount;
 
 $last = (count($data) < $logmaxtime) ? array_slice($data, -$logmaxtime) :  $data;
 
