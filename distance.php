@@ -30,6 +30,11 @@ if (!$distance) {
     die(1);
 }
 
+if ($distance > 1000) {
+    echo "augh";
+    die(1);
+}
+
 $hour = 3600;
 
 $logamount = 24;
